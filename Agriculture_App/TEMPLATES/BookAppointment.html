@@ -1,0 +1,69 @@
+{% extends 'Base.html'%}
+{% block content%}
+{% if messages %}
+
+{% for message in messages %}
+{% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+{% endfor %}
+
+{% endif %}
+{%load static%}
+<div style="background-image:  url('/media/home.jpg'); background-repeat:no-repeat;background-size:cover;  height:650px; width:100%;">
+
+
+<div style="height:10px;background-color: orange;">
+  
+</div>
+<header>
+	<h1>
+		Doctors List
+	</h1>
+</header>
+<br>
+
+
+{% if doctors%}
+<div class="container">
+	<table class="table table-hover table-stripped table-light">
+		<thead>
+			<th>ID</th>
+			<th>Name</th>
+			<th>Age</th>
+			<th>Gender</th>
+			<th>Phone</th>
+			<th>Address</th>
+			<th>Speciality</th>
+			<th>Action</th>
+		</thead>
+
+		<tbody>
+			{%for i in doctors%}
+			<tr>
+				<td>{{i.id}}</td>
+				<td>{{i.Name}}</td>
+				<td>{{i.Age}}</td>
+				<td>{{i.Gender}}</td>
+				<td>{{i.Phone}}</td>
+				<td>{{i.Address}}</td>
+				<td>{{i.Speciality}}</td>
+				<td><a href="/Book_doctor/{{i.id}}" class="btn btn-outline-danger">Book Appointment</a></td>
+
+			</tr>
+			{%endfor%}
+			
+		</tbody>
+		{%else%}
+		<div class="container" style="width:50%;height:100px">
+			
+			<p style="text-align:center;background-color: yellow;">No Doctor For this Disease</p>
+		</div>
+		
+		{% endif %}
+	</table>
+</div>
+    
+
+    
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'Base.html'%}
+	{% block content%}
+	{% if messages %}
+		{% for message in messages %}
+			{% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+		{% endfor %}
+
+	{% endif %}
+{%load static%}
+    
+<div style="background-image:  url(); background-repeat:no-repeat;background-size:cover;  min-height:658px; width:100%;height: auto;">
+
+<style>
+	th,tr{
+		text-align: center;
+	}
+</style>
+<div style="height:10px;background-color: orange;">
+  
+</div>
+<header>
+	<h1>
+    Manage Doctors
+</h1>
+</header>
+
+<br>
+
+
+<div class="container">
+	<br>
+	<table class="table table-hover table-danger table-stripped table-bordered">
+		<thead>
+			<th>ID</th>
+			<th>Registration Number</th>
+			<th>Doctor Name</th>
+			<th colspan="2">Action</th>
+		</thead>
+
+		<tbody>
+			{%for i in details%}
+			<tr>
+				<td>{{i.id}}</td>
+				<td>{{i.registeratio_number}}</td>
+				<td>{{i.Name}}</td>
+				<td>
+					<a href="/View_Doctor/{{i.id}}" class="btn btn-info">View Doctor <i class="bi bi-eye-fill"></i></a>
+
+					<!-- <a href="/Doctor_Edit_Profile/{{i.id}}" class="btn btn-success">Update Doctor <i class="bi bi-arrow-repeat"></i></a>
+					<a href="#" class="btn btn-danger">Delete Doctor <i class="bi bi-person-x"></i></a> -->
+				</td>
+				{%if i.Permission == 'Rejected'%}
+				<td>
+					<a href="/Accept/{{i.id}}" class="btn btn-secondary">Accept <i class="fa-solid fa-check"></i></a>
+				</td>
+				{%else%}
+				<td style="padding-top:15px;">
+					{{i.Permission}} <i class="fa-solid fa-thumbs-up"></i>
+				</td>
+				{%endif%}
+			</tr>
+			{%endfor%}
+		</tbody>
+	</table>
+</div>
+
+
+    
+</div>
+{%endblock%}

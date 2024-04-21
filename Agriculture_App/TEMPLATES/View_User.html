@@ -1,0 +1,60 @@
+{% extends 'Base.html'%}
+	{% block content%}
+	{% if messages %}
+		{% for message in messages %}
+			{% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+		{% endfor %}
+
+	{% endif %}
+{%load static%}
+    
+<div style="background-image:  url(); background-repeat:no-repeat;background-size:cover;  min-height:658px; width:100%;height: auto;">
+
+<div style="height:10px;background-color: orange;">
+  
+</div>
+
+<header>
+	<h1>
+    View Users
+</h1>
+</header>
+
+<br>
+
+
+
+<div class="container">
+  <table class="table table-hover table-stripped table-dark table-bordered">
+    <thead>
+      <th>User ID</th>
+      <th>Name</th>
+      <th>Address</th>
+      <th>Area</th>
+      <th>Phone </th>
+      <th>Birth Date </th>
+      <th>Gender </th>
+    </thead>
+
+    <tbody>
+      {%for i in details%}
+      <tr>
+        <td>{{i.id}}</td>
+        <td>{{i.full_name}}</td>
+        <td>{{i.Address}}</td>
+        <td>{{i.Area}}</td>
+        <td>{{i.phone}}</td>
+        <td>{{i.birth_date}}</td>
+        <td>{{i.gender}}</td>
+      </tr>
+      {%endfor%}
+    </tbody>
+  </table>
+</div>
+
+
+
+    
+</div>
+{%endblock%}

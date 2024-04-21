@@ -1,0 +1,163 @@
+{% extends 'Base.html'%}
+{% block content%}
+{% if messages %}
+
+{% for message in messages %}
+{% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+{% endfor %}
+
+{% endif %}
+{%load static%}
+
+<style>
+    .box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 50px;
+}
+
+.box > div { /*The > denotes only the first or immediate child will be affected*/
+  width: 500px;
+  height: auto;
+  background-color: lightcyan;
+}
+</style>
+<div style="height:10px;background-color: orange;">
+  
+</div>
+<header>
+    <h1>
+        Profile Details Of Dr.{{data.Name}}
+    </h1>
+</header>
+
+<div style="background-image:  url('/media/home.jpg'); background-repeat:no-repeat;background-size:cover;  height:950px; width:100%;">
+    <div class="box"style="padding-top: 70px;" >
+        <div class="container" style="width: 800px;height: 850px">
+            <h1 style="text-align: center;color: black;padding-top: 5px;">View Profile</h1>
+            <hr>
+            <form method="POST" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="userid" value="{{ details.0.id }}">
+                <div class="row">
+               
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-12">
+                             <label class="form-label" for="Name">Name:</label>
+                        <input class="form-control" type="text" name="Name" value="{{ details.0.Name }}" readonly>
+                        </div>
+                    </div>
+
+                    <br>
+                    <div class="row">
+                        <div class="col-md-6">
+                         <label class="form-label" for="Gender">Gender</label>
+                         <select  class="form-select" name="Gender">
+                            <option value="Male" {% if details.0.Gender == 'Male' %} selected {% endif %}>Male</option>
+                            <option value="Female" {% if details.0.Gender == 'Female' %} selected {% endif %}>Female</option>
+                            <option value="Other" {% if details.0.Gender == 'Other' %} selected {% endif %}>Other</option>
+                        </select>
+                </div>
+                    
+                <div class="col-md-6">
+                    <label class="form-label" for="Age">Age:</label>
+                    <input class="form-control" type="text" name="Age" value="{{ details.0.Age }}" readonly>
+               </div>
+               </div>
+               <br>
+               <div class="row">
+                <div class="col-md-12">
+                 <label class="form-label" for="phone">Phone:</label>
+                <input type="tel" id="phone" name="phone" pattern="[789]{1}[0-9]{9}" class="form-control" maxlength="10" value="{{ details.0.Phone }}" readonly>
+                </div>
+              </div>
+
+                <br>
+                <div class="row">
+                    <div class="col-md-6">
+
+                     <label class="form-label" for="Username">Username</label>
+                     <input class="form-control" type="text" name="Username" value="{{ details.0.username }}" readonly>
+                 </div>
+                     <div class="col-md-6">
+                    
+                        <label class="form-label" for="Password">Password</label>
+                        <input class="form-control" type="Password" name="Password" value="{{ details.0.password }}" readonly>
+                    </div>
+                   </div>
+
+               </div>
+              
+               <div class="col-md-4">
+                <label class="form-label">Profile Photo</label>
+                <p><img style="background-color: white;" name="Picture" id="output" height="250" width="200" src="{{ details.0.Picture.url }}" alt="Uploaded Image"></p>
+            </div>
+            
+            
+
+                    <br>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label" for="State">State</label>
+                            <input class="form-control" type="text" name="State" value="{{ details.0.State }}" readonly>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label" for="City">City</label>
+                                <input class="form-control" type="text" name="City" value="{{ details.0.City }}" readonly>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label" for="Area">Area</label>
+                            <input class="form-control" type="text" name="Area" value="{{ details.0.Area }}" readonly>
+                        </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="form-label" for="Address">Address</label>
+                                <input class="form-control" type="text" name="Address" value="{{ details.0.Address }}" readonly>
+                            </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="form-label" for="Speciality">Speciality</label>
+
+                                    <input type="text" name="Speciality" class="form-control" value="{{ details.0.Speciality }}" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="Type_of_medicine">Type of medicine</label>
+                    
+                                    <select id="medicine-select" class="form-control" name="Type_of_medicine">
+                                        <option value="allopathic" {% if details.0.Type_of_medicine == 'allopathic' %} selected {% endif %}>allopathic</option>
+                                        
+                                        <option value="ayurvedic" {% if details.0.Type_of_medicine == 'ayurvedic' %} selected {% endif %}>Ayurvedic</option>
+                                        <option value="homeopathic" {% if details.0.Type_of_medicine == 'homeopathic' %} selected {% endif %}>Homeopathic</option>
+                                        <option value="naturopathic" {% if details.0.Type_of_medicine == 'naturopathic' %} selected {% endif %}>Naturopathic</option>
+                                        <option value="tcm" {% if details.0.Type_of_medicine == 'tcm' %} selected {% endif %}>Traditional Chinese Medicine</option>
+                                        </select>               
+                                     </div>
+                                        </div>
+                                <br>
+                                <div class="row">
+             <div class="col-md-12">
+                    <label class="form-label">Add Disease Treated</label>
+                  <input type="text" id="Disease" name="Disease" class="form-control" value="{{ details.0.Disease_treated }}" readonly> 
+                </div>
+            </div>
+            <br>
+            <br>
+            <br>
+                             
+            </form>
+       
+       </div>
+    </div>
+     <br>
+    <br>
+   
+</div>
+
+{% endblock %}

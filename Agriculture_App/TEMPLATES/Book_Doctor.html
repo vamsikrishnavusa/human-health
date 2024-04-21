@@ -1,0 +1,140 @@
+{% extends 'Base.html'%}
+{% block content%}
+{% if messages %}
+
+{% for message in messages %}
+{% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+{% endfor %}
+
+{% endif %}
+{%load static%}
+
+<style>
+    .box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 50px;
+}
+
+.box > div { /*The > denotes only the first or immediate child will be affected*/
+  width: 500px;
+  height: auto;
+  background-color: white;
+}
+</style>
+<div style="height:10px;background-color: orange;">
+  
+</div>
+
+<header>
+	<h1>
+		Appointment Boooking
+	</h1>
+</header>
+
+<div style="background-image:  url('/media/home.jpg'); background-repeat:no-repeat;background-size:cover;  height:950px; width:100%;">
+<div class="box"style="padding-top: 70px;" >
+	<div class="container" style="width: 800px;height: 550px">
+		<h1 style="text-align: center;">Book Appointment</h1>
+		<hr>
+
+		<form method="POST" action="/BookAppointments/" enctype="multipart/form-data">
+			{% csrf_token %}
+				
+			<div class="row">
+			
+			<div class="mb-3 col-md-6">
+				<label class="form-label">Booking ID</label>
+				<input type="text" name="b_id" class="form-control" value="{{next_id}}" readonly>
+
+			</div>
+
+			
+				
+				<input type="text" name="d_id" class="form-control" value="{{d_id}}" hidden>
+		
+			
+			
+			<div class="mb-3 col-md-6">
+				<label class="form-label">Doctor Name</label>
+				<input type="text" name="d_name" class="form-control" value="{{doctor_name}}" readonly>
+			</div>
+			
+		</div>
+
+		<div class="row">
+			<div class="mb-3">
+				<label class="form-label">Reason</label>
+				<input type="text" name="Reason" class="form-control">
+			</div>
+		</div>
+		<div class="row">
+			<div class="mb-3">
+				<label class="form-label">Medical History</label>
+				<input type="text" name="Medical_History" class="form-control">
+			</div>
+		</div>
+			<div class="row">
+			
+			<div class="mb-3 col-md-6">
+				<label for="start-time">Select Start Time:</label>
+        <input type="time" id="start-time" name="start_time" class="form-control">
+			</div>
+		
+			<div class="mb-3 col-md-6">
+				 <label for="end-time">Select End Time:</label>
+        <input type="time" id="end-time" name="end_time" class="form-control">
+			</div>
+			<p id="timing-feedback"></p>
+		
+		</div>
+<br>
+<br>
+		
+
+       
+              <div class="row">
+                  <div class="col-md-12" style="display: flex;justify-content: center;">
+                      <input class="btn btn-danger" type="submit" name="submit" value="Book">
+                  </div>
+              </div>
+		</form>
+	</div>
+</div>
+
+
+</div>
+<script>
+	var start1 = "{{doctor_start}}"
+	console.log(start1)
+	var start2 = "{{doctor_end}}"
+	console.log(start2)
+	const startTimeInput = document.getElementById("start-time");
+	console.log(startTimeInput)
+	const endTimeInput = document.getElementById("end-time");
+	console.log(endTimeInput)
+	startTimeInput.addEventListener("input", checkTimings);
+	endTimeInput.addEventListener("input", checkTimings);
+	 function checkTimings() {
+        const startTime = startTimeInput.value;
+        console.log(startTime)
+        const endTime = endTimeInput.value;
+        console.log(endTime)
+      
+function convertToStandardTimeFormat(timeString) {
+  const [hours, minutes] = timeString.split(":");
+  const date = new Date("July 27, 2023");
+  date.setHours(parseInt(hours, 10));
+  date.setMinutes(parseInt(minutes, 10));
+  return date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+}
+}
+const startTimeFormatted = convertToStandardTimeFormat(startTime);
+const endTimeFormatted = convertToStandardTimeFormat(endTime);
+
+console.log("Converted Start Time:", startTimeFormatted);
+console.log("Converted End Time:", endTimeFormatted);
+</script>
+{% endblock %}

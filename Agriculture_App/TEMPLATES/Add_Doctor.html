@@ -1,0 +1,383 @@
+{% extends 'Base.html'%}
+	{% block content%}
+	{% if messages %}
+		{% for message in messages %}
+			{% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+		{% endfor %}
+
+	{% endif %}
+{%load static%}
+    
+<div style="background-image:  url(); background-repeat:no-repeat;background-size:cover;  min-height:658px; width:100%;height: auto;">
+<div style="height:10px;background-color: orange;">
+  
+</div>
+
+<header>
+	<h1>
+    Add Doctor
+</h1>
+</header>
+
+<br>
+    <style>.dropdown {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.dropdown-input {
+  width: 100%;
+  padding: 5px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 999;
+  display: none;
+  width: 100%;
+  padding-right:200px;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+
+.dropdown-menu.open {
+  display: block;
+}
+
+.dropdown-menu option {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.dropdown-selected {
+  width: 100%;
+  padding-right:200px;
+  margin-top: 5px;
+  padding: 5px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+}
+
+.dropdown-selected span {
+  background-color: #eaeaea;
+  padding: 2px 5px;
+  margin-right: 5px;
+}
+
+        .box{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 20px;
+    }
+
+    .box>div {
+ width: 600px;
+  height: 600px;
+  background-color: #fae8d2;
+/*  border: 1px solid;*/
+  padding: 10px;
+  box-shadow: 5px 10px #888888;
+  border-radius: 10px;
+}
+
+input[type=submit]{
+    box-shadow: inset 0 0 0 0 #54b3d6;
+  transition: color .4s ease-in-out, box-shadow .2s ease-in-out;
+}
+
+input[type=submit]:hover {
+  box-shadow: inset 100px 0 0 0 #54b3d6;
+  color: white;
+}
+        
+    </style>
+
+    <div class="box"style="padding-top: 70px;" >
+    <div class="container" style="width: 700px;height:1200px">
+       <div>
+        <h1 style="text-align:center;">Doctor Registeration</h1>
+        <hr>
+            <form method="POST" action="/Doctor_Registration/" enctype="multipart/form-data">
+                {% csrf_token %}
+
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="form-label">Registeration Number:</label>
+                    <input class="form-control" type="text" name="registeratio_number" required>
+                </div>
+                <br>
+               
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-12">
+                         <label class="form-label">Name</label>
+                    <input class="form-control" type="text" name="Name" required>
+                    </div>
+                </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-6">
+                         <label class="form-label">Gender</label>
+                    <select name="Gender" class="form-select" required>
+                        <option selected>Select</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="N/A">N/A</option>
+                    </select>
+                </div>
+                    
+                    <div class="col-md-6">
+                         <label class="form-label">Age</label>
+                         <input class="form-control" type="text" name="Age" required>
+                    </div>
+                    </div>
+                     <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                         <label class="form-label">Phone</label>
+                   <input type="tel" id="phone" name="phone" pattern="[789]{1}[0-9]{9}" class="form-control" maxlength="10" required>
+
+                </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-6">
+
+                         <label class="form-label">Username</label>
+                         <input class="form-control" type="text" name="Username" required>
+                     </div>
+                     <div class="col-md-6">
+                    
+                         <label class="form-label">Password</label>
+                         <input class="form-control" type="Password" name="Password" required>
+                     </div>
+                    </div>
+
+                </div>
+                 <div class="col-md-4">
+                    <label class="form-label">Upload Picture</label>
+                     <p><input type="file"  accept="image/*" name="Picture" id="file"  onchange="loadFile(event)" style="display: none;"></p>
+                <p><label class="form-control" style="border:outset;cursor: pointer;" for="file" >Upload Image</label></p>
+                <p><img style="background-color: white;" name="Picture" id="output" height="250" width="200" /></p>
+                </div>
+            </div>
+            <br>
+             <div class="row">
+                <div class="col-md-4">
+                    <label class="form-label">State</label>
+                    <input class="form-control" type="text" name="State" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">City</label>
+                     <input class="form-control" type="text" name="City" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Area</label>
+                    <input class="form-control" type="text" name="Area" required>
+                </div>
+            </div>
+            <br>
+             <div class="row">
+                <div class="col-md-12">
+                    <label class="form-label">Address</label>
+                    <input class="form-control" type="text" name="Address" required>
+                </div>
+            </div>
+            <br>
+                     <div class="row">
+                        <div class="col-md-6">
+                    <label class="form-label">College of Passing</label>
+                    <input type="text" name="College" class="form-control" required>             
+            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Year of Passing</label>
+                  <input type="number" id="year" name="Year" min="2000" max="2099" step="1" class="form-control">
+                </div>
+                 </div> 
+            <br>
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="form-label">Speciality</label>
+        <select id="specialty-select" name="Speciality" class="form-control">
+        <option value="anesthesiology">Anesthesiology</option>
+        <option value="cardiology">Cardiology</option>
+        <option value="dermatology">Dermatology</option>
+        <option value="emergency-medicine">Emergency Medicine</option>
+        <option value="endocrinology">Endocrinology</option>
+        <option value="family-medicine">Family Medicine</option>
+        <option value="gastroenterology">Gastroenterology</option>
+        <option value="general-surgery">General Surgery</option>
+        <option value="geriatrics">Geriatrics</option>
+        <option value="hematology">Hematology</option>
+        <option value="infectious-diseases">Infectious Diseases</option>
+        <option value="internal-medicine">Internal Medicine</option>
+        <option value="neonatology">Neonatology</option>
+        <option value="nephrology">Nephrology</option>
+        <option value="neurology">Neurology</option>
+        <option value="obstetrics-gynecology">Obstetrics and Gynecology</option>
+        <option value="oncology">Oncology</option>
+        <option value="ophthalmology">Ophthalmology</option>
+        <option value="orthopedics">Orthopedics</option>
+        <option value="otolaryngology">Otolaryngology (ENT)</option>
+        <option value="pediatrics">Pediatrics</option>
+        <option value="physical-medicine-rehabilitation">Physical Medicine and Rehabilitation</option>
+        <option value="plastic-surgery">Plastic Surgery</option>
+        <option value="psychiatry">Psychiatry</option>
+        <option value="pulmonology">Pulmonology</option>
+        <option value="radiology">Radiology</option>
+        <option value="rheumatology">Rheumatology</option>
+        <option value="urology">Urology</option>
+        <!-- Add more options as needed -->
+    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Type of Medicines</label>
+                    
+  <select id="medicine-select" class="form-control" name="Type_of_medicine">
+    <option value="allopathic">Allopathic</option>
+    <option value="ayurvedic">Ayurvedic</option>
+    <option value="homeopathic">Homeopathic</option>
+    <option value="naturopathic">Naturopathic</option>
+    <option value="tcm">Traditional Chinese Medicine</option>
+  </select>                </div>
+            </div>
+            <br>
+            <div class="row">
+             <div class="col-md-12">
+            <label class="form-label">Enter Disease:</label>
+  <div class="dropdown">
+    <input class="dropdown-input" type="text" id="exampleDropdown" placeholder="Type to search..." >
+    <div class="dropdown-menu" id="dropdownMenu">
+      {% for symptom in symptoms %}
+      <option value="{{ symptom }}">{{ symptom }}</option>
+    {% endfor %}
+ 
+</div>
+  </div>
+
+  <!-- Hidden input to store selected options -->
+  <input type="hidden" name="options" id="hiddenOptions">
+
+  <!-- Display selected options -->
+  <div class="dropdown-selected" id="selectedOptions"></div>
+                </div>
+            </div>
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-md-12" style="display:flex;justify-content: center;align-items: center;">
+                    <input type="submit" name="" value="Register" class="btn btn-secondary">
+                </div>
+            </div>
+            </form>
+       
+       </div>
+    </div>
+     <br>
+    <br>
+   
+</div>
+</div>
+<br>
+<script>
+    var loadFile = function(event) {
+    var image = document.getElementById('output');
+    image.src = URL.createObjectURL(event.target.files[0]);
+}
+    </script>
+
+
+    <script>
+// Get the dropdown input and the hidden input
+const dropdownInput = document.getElementById('exampleDropdown');
+const dropdownMenu = document.getElementById('dropdownMenu');
+const hiddenOptionsInput = document.getElementById('hiddenOptions');
+const selectedOptionsContainer = document.getElementById('selectedOptions');
+
+// Store the selected options in an array
+let selectedOptions = [];
+
+// Add event listeners for the dropdown input
+dropdownInput.addEventListener('input', handleDropdownInput);
+dropdownInput.addEventListener('focus', openDropdownMenu);
+dropdownInput.addEventListener('blur', closeDropdownMenu);
+
+// Add event listener for dropdown menu options
+dropdownMenu.addEventListener('click', handleOptionSelection);
+
+// Function to handle dropdown input changes
+function handleDropdownInput() {
+  const inputValue = dropdownInput.value.toLowerCase();
+
+  // Filter the options in the dropdown menu
+  const options = Array.from(dropdownMenu.getElementsByTagName('option'));
+
+  options.forEach(option => {
+    const optionText = option.textContent.toLowerCase();
+    const isVisible = optionText.includes(inputValue);
+    option.style.display = isVisible ? 'block' : 'none';
+  });
+}
+
+// Function to open the dropdown menu
+function openDropdownMenu() {
+  dropdownMenu.classList.add('open');
+}
+
+// Function to close the dropdown menu
+function closeDropdownMenu() {
+  setTimeout(() => {
+    dropdownMenu.classList.remove('open');
+  }, 200);
+}
+
+// Function to handle option selection
+function handleOptionSelection(event) {
+  const clickedOption = event.target;
+  const selectedOption = clickedOption.value;
+
+  // Toggle the selected state of the clicked option
+  clickedOption.selected = !clickedOption.selected;
+
+  // If the selected option is not already in the array, add it
+  if (!selectedOptions.includes(selectedOption)) {
+    selectedOptions.push(selectedOption);
+  } else {
+    // If the option is already selected, remove it from the array
+    const optionIndex = selectedOptions.indexOf(selectedOption);
+    selectedOptions.splice(optionIndex, 1);
+  }
+
+  // Update the hidden input with the selected options separated by commas
+  hiddenOptionsInput.value = selectedOptions.join(',');
+
+  // Update the selected options container with the selected options separated by commas
+  selectedOptionsContainer.innerHTML = selectedOptions.map(option => `<span>${option}</span>`).join(', ');
+
+  // Clear the input value after selection
+  dropdownInput.value = '';
+
+  // Update the dropdown menu based on the current input value
+  handleDropdownInput();
+
+  // Prevent the default behavior of the clicked option
+  event.preventDefault();
+
+  // Show or hide the selected options container based on the selectedOptions array
+  selectedOptionsContainer.style.display = selectedOptions.length > 0 ? 'block' : 'none';
+}
+</script>
+
+
+    
+
+{%endblock%}

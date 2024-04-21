@@ -1,0 +1,98 @@
+{% extends 'Base.html'%}
+{% block content%}
+{% if messages %}
+
+{% for message in messages %}
+{% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+{% endfor %}
+
+{% endif %}
+{%load static%}
+<style>
+        .box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 50px;
+}
+
+.box > div { /*The > denotes only the first or immediate child will be affected*/
+  width: 500px;
+  height: auto;
+  /*border: dotted;
+*/
+  background-color: #E5DDC5;
+  border-radius: 5px
+}
+
+.box > div label{
+    
+}
+
+th,tr{
+  text-align: center;
+}
+
+
+</style>
+
+<div style="background-image:  url('/media/.jpg'); background-repeat:no-repeat;background-size:cover;  min-height:650px; width:100%;height: auto;">
+  <div style="height:10px;background-color: orange;">
+  
+</div>
+  <header>
+    <h1>User Feedback</h1>
+  </header>
+    <div class="box">
+        <div class="shadow-lg p-3 mb-5 ">
+             <center><h3 >SUBMIT YOUR FEEDBACK</h3> </center>
+             <hr>
+            <form method="POST" action="/Submit_User_Feedback/" enctype="multipart/form-data" style="padding:25px;">
+                {% csrf_token %}
+              <div class="row">
+                  <div class="col-md-12">
+                    <label for="validationCustomUsername" class="form-label">Feedback</label>
+                      <div class="input-group has-validation">
+                          <span class="input-group-text material-symbols-outlined" id="inputGroupPrepend">person</span>
+                          <textarea class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" name="feedback" required></textarea>
+                          <div class="invalid-feedback">
+                              Please choose a username.
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <br>
+              <div class="row">
+                  <div class="col-md-12" style="display: flex;justify-content: center;">
+                      <input class="btn btn-secondary" type="submit" name="submit">
+                  </div>
+              </div>
+              <br>
+            </form>
+        </div>
+    </div>
+
+
+
+    <div class="container">
+      <table class="table table-hover table-stripped table-dark table-bordered">
+        <thead>
+          <th>ID</th>
+          <th>Feedback</th>
+          <th>Response</th>
+        </thead>
+
+        <tbody>
+          {%for i in details%}
+          <tr>
+            <td>{{i.id}}</td>
+            <td>{{i.feedback}}</td>
+            <td>{{i.response}}</td>
+          </tr>
+          {%endfor%}
+        </tbody>
+      </table>
+    </div>
+</div>
+{% endblock %}

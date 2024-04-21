@@ -1,0 +1,82 @@
+{% extends 'Base.html'%}
+{% block content%}
+{% if messages %}
+
+{% for message in messages %}
+{% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+{% endfor %}
+
+{% endif %}
+{%load static%}
+<style>
+        .box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 50px;
+}
+
+.box > div { /*The > denotes only the first or immediate child will be affected*/
+  width: 500px;
+  height: auto;
+  /*border: dotted;
+*/
+  background-color: #E5DDC5;
+  border-radius: 5px
+}
+
+.box > div label{
+    
+}
+
+th,tr{
+  text-align: center;
+}
+
+
+</style>
+
+<div style="background-image:  url('/media/.jpg'); background-repeat:no-repeat;background-size:cover;  min-height:650px; width:100%;height: auto;">
+  <div style="height:10px;background-color: orange;">
+  
+</div>
+  <header>
+    <h1>Reply To User Feedback</h1>
+  </header>
+    
+<br>
+
+
+    <div class="container">
+      <table class="table table-hover table-stripped table-dark table-bordered">
+        <thead>
+          <th>ID</th>
+          <th>Feedback</th>
+          <th>Response</th>
+          <th colspan="2">Action</th>
+        </thead>
+
+        <tbody>
+          {%for i in details%}
+          <tr>
+            <td>{{i.id}}</td>
+            <td>{{i.feedback}}</td>
+            <td>{{i.response}}</td>
+
+            <form method="POST" action="/Reply_User/{{i.id}}" enctype="multipart/form-data">
+              {%csrf_token%}
+              <td>
+                <input type="text" name="reply" class="form-control">
+              </td>
+              <td>
+                <input type="submit" class="btn btn-success" name="">
+              </td>
+            </form>
+          </tr>
+          {%endfor%}
+        </tbody>
+      </table>
+    </div>
+</div>
+{% endblock %}

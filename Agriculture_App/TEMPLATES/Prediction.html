@@ -1,0 +1,228 @@
+{% extends 'Base.html'%}
+{% block content%}
+{% if messages %}
+{% for message in messages %}
+{% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+{% endfor %}
+{% endif %}
+{%load static%}
+
+<style>
+.dropdown {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.dropdown-input {
+  width: 100%;
+  padding: 5px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 999;
+  display: none;
+  width: 100%;
+  padding-right:200px;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+
+.dropdown-menu.open {
+  display: block;
+}
+
+.dropdown-menu option {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.dropdown-selected {
+  width: 100%;
+  padding-right:200px;
+  margin-top: 5px;
+  padding: 5px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+}
+
+.dropdown-selected span {
+  background-color: #eaeaea;
+  padding: 2px 5px;
+  margin-right: 5px;
+}
+
+</style>
+<style>
+/* video background */
+#background-video {
+  height: 100vh;
+  width: 100vw;
+  object-fit: cover;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: -1;
+}
+
+/* page content */
+h1, h2 {
+  color: white;
+  font-family: Trebuchet MS;
+  font-weight: bold;
+  text-align: center;
+}
+
+
+
+h2 { font-size: 3rem; }
+
+@media (max-width: 750px) {
+    #background-video { display: none; }
+    body {
+      background: url("/media/image.jpg") no-repeat;
+      background-size: cover;
+    }
+}
+</style>
+<div style="height:10px;background-color: orange;">
+  
+</div>
+
+<header>
+  <h1>Prediction</h1>
+</header>
+
+<div style="height:800px;">
+
+
+<div class="box" style="padding-top: 100px;" >
+<div class="container"   style="background-color: rgba(255,253,208,0.3);">
+
+  <h3 style="text-align:center;color:black">Select The symptoms you are experiencing</h3>
+<form method="POST" action="/Prediction/" enctype="multipart/form-data">
+  {% csrf_token %} 
+
+  <!-- Custom dropdown with multiple select options -->
+  <div class="dropdown">
+    <input class="dropdown-input" type="text" id="exampleDropdown" placeholder="Type to search...">
+    <div class="dropdown-menu" id="dropdownMenu">
+      {% for symptom in symptoms %}
+      <option value="{{ symptom }}">{{ symptom }}</option>
+    {% endfor %}
+ 
+</div>
+  </div>
+
+  <!-- Hidden input to store selected options -->
+  <input type="hidden" name="options" id="hiddenOptions">
+
+  <!-- Display selected options -->
+  <div class="dropdown-selected" id="selectedOptions"></div>
+  <br>
+
+<center><input type="submit" name="" id="hiddenOptions" class="btn btn-success"></center>  
+<br>
+</form>
+{% if disease %}
+<p style="text-align: center;">Predicted Disease Based on the symptoms is : {{disease}}</p>
+<p style="text-align: center;"> <a href='{{google_link}}'>Click here for more information</a></p>
+<center><a href="/BookAppointment/{{disease}}" class="btn btn-danger"style="align-content: center;">Visit Doctor</a></center>
+{% endif %}
+</div>
+</div>
+</div>
+
+<!-- Your previous HTML code -->
+
+<script>
+// Get the dropdown input and the hidden input
+const dropdownInput = document.getElementById('exampleDropdown');
+const dropdownMenu = document.getElementById('dropdownMenu');
+const hiddenOptionsInput = document.getElementById('hiddenOptions');
+const selectedOptionsContainer = document.getElementById('selectedOptions');
+
+// Store the selected options in an array
+let selectedOptions = [];
+
+// Add event listeners for the dropdown input
+dropdownInput.addEventListener('input', handleDropdownInput);
+dropdownInput.addEventListener('focus', openDropdownMenu);
+dropdownInput.addEventListener('blur', closeDropdownMenu);
+
+// Add event listener for dropdown menu options
+dropdownMenu.addEventListener('click', handleOptionSelection);
+
+// Function to handle dropdown input changes
+function handleDropdownInput() {
+  const inputValue = dropdownInput.value.toLowerCase();
+
+  // Filter the options in the dropdown menu
+  const options = Array.from(dropdownMenu.getElementsByTagName('option'));
+
+  options.forEach(option => {
+    const optionText = option.textContent.toLowerCase();
+    const isVisible = optionText.includes(inputValue);
+    option.style.display = isVisible ? 'block' : 'none';
+  });
+}
+
+// Function to open the dropdown menu
+function openDropdownMenu() {
+  dropdownMenu.classList.add('open');
+}
+
+// Function to close the dropdown menu
+function closeDropdownMenu() {
+  setTimeout(() => {
+    dropdownMenu.classList.remove('open');
+  }, 200);
+}
+
+// Function to handle option selection
+function handleOptionSelection(event) {
+  const clickedOption = event.target;
+  const selectedOption = clickedOption.value;
+
+  // Toggle the selected state of the clicked option
+  clickedOption.selected = !clickedOption.selected;
+
+  // If the selected option is not already in the array, add it
+  if (!selectedOptions.includes(selectedOption)) {
+    selectedOptions.push(selectedOption);
+  } else {
+    // If the option is already selected, remove it from the array
+    const optionIndex = selectedOptions.indexOf(selectedOption);
+    selectedOptions.splice(optionIndex, 1);
+  }
+
+  // Update the hidden input with the selected options separated by commas
+  hiddenOptionsInput.value = selectedOptions.join(',');
+
+  // Update the selected options container with the selected options separated by commas
+  selectedOptionsContainer.innerHTML = selectedOptions.map(option => `<span>${option}</span>`).join(', ');
+
+  // Clear the input value after selection
+  dropdownInput.value = '';
+
+  // Update the dropdown menu based on the current input value
+  handleDropdownInput();
+
+  // Prevent the default behavior of the clicked option
+  event.preventDefault();
+
+  // Show or hide the selected options container based on the selectedOptions array
+  selectedOptionsContainer.style.display = selectedOptions.length > 0 ? 'block' : 'none';
+}
+</script>
+
+{% endblock %}
